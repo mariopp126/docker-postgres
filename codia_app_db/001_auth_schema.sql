@@ -14,7 +14,6 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE TABLE auth.users (
 id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
 
-```
 email VARCHAR(255) NOT NULL,
 username VARCHAR(50),
 password_hash TEXT NOT NULL,
@@ -29,8 +28,6 @@ last_login_at TIMESTAMPTZ,
 created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 deleted_at TIMESTAMPTZ
-```
-
 );
 
 ALTER TABLE auth.users
@@ -75,13 +72,13 @@ user_id UUID NOT NULL,
 role_id UUID NOT NULL,
 assigned_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 
-```
+
 CONSTRAINT pk_user_roles PRIMARY KEY (user_id, role_id),
 CONSTRAINT fk_user_roles_user
     FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE,
 CONSTRAINT fk_user_roles_role
     FOREIGN KEY (role_id) REFERENCES auth.roles(id) ON DELETE CASCADE
-```
+
 
 );
 
@@ -93,13 +90,13 @@ CREATE TABLE auth.role_permissions (
 role_id UUID NOT NULL,
 permission_id UUID NOT NULL,
 
-```
+
 CONSTRAINT pk_role_permissions PRIMARY KEY (role_id, permission_id),
 CONSTRAINT fk_role_permissions_role
     FOREIGN KEY (role_id) REFERENCES auth.roles(id) ON DELETE CASCADE,
 CONSTRAINT fk_role_permissions_permission
     FOREIGN KEY (permission_id) REFERENCES auth.permissions(id) ON DELETE CASCADE
-```
+
 
 );
 
@@ -111,7 +108,7 @@ CREATE TABLE auth.sessions (
 id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
 user_id UUID NOT NULL,
 
-```
+
 ip_address INET,
 user_agent TEXT,
 
@@ -123,7 +120,7 @@ is_revoked BOOLEAN NOT NULL DEFAULT FALSE,
 
 CONSTRAINT fk_sessions_user
     FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE
-```
+
 
 );
 
@@ -138,14 +135,14 @@ id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
 user_id UUID NOT NULL,
 token_hash TEXT NOT NULL,
 
-```
+
 created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 expires_at TIMESTAMPTZ NOT NULL,
 revoked_at TIMESTAMPTZ,
 
 CONSTRAINT fk_refresh_tokens_user
     FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE
-```
+
 
 );
 
@@ -162,10 +159,10 @@ token_hash TEXT NOT NULL,
 expires_at TIMESTAMPTZ NOT NULL,
 used_at TIMESTAMPTZ,
 
-```
+
 CONSTRAINT fk_password_resets_user
     FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE
-```
+
 
 );
 
@@ -180,10 +177,9 @@ token_hash TEXT NOT NULL,
 expires_at TIMESTAMPTZ NOT NULL,
 verified_at TIMESTAMPTZ,
 
-```
+
 CONSTRAINT fk_email_verifications_user
     FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE
-```
 
 );
 
